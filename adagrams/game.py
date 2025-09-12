@@ -57,7 +57,6 @@ def get_highest_word_score(word_list):
     winner_max = [word_list[0], score_word(word_list[0])]
     for i in range(1, len(word_list)):
         current_score = score_word(word_list[i])
-        print(word_list[i],current_score,winner_max)
         ### cases where update needed
         if current_score > winner_max[1]:
             winner_max = [word_list[i], current_score]
