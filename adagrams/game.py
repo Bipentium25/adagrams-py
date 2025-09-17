@@ -104,21 +104,21 @@ def score_word(word):
     
 def get_highest_word_score(word_list):
     winner_max = [word_list[0], score_word(word_list[0])]
-    for i in range(1, len(word_list)):
-        current_score = score_word(word_list[i])
-        ### 3 cases where update needed
-        if current_score > winner_max[1]:
-            # 1. current score larger than recorded 
-            winner_max = [word_list[i], current_score]
-        elif current_score == winner_max[1]: 
-            if len(word_list[i]) != 10 and len(winner_max[0])!= 10:
-                if len(word_list[i]) < len(winner_max[0]): 
-                    # 2. when equal in word length, and both length != 10. Update needed only when current length < recorded word length.
-                    winner_max = [word_list[i], current_score]
-            elif len(word_list[i]) == 10 and len(winner_max[0])!= 10:
-                # 3. when len(currentword) == 10. Automatically wins over the others. 
-                winner_max = [word_list[i], current_score]
-    
+    for word in word_list:
+        current_score = score_word(word)
+        if len(word) !=10 and len(winner_max[0]) != 10:
+            if current_score > winner_max[1] :
+                winner_max = [word, current_score]
+            elif current_score == winner_max[1] and len(word) < len(winner_max[0]):
+                winner_max = [word, current_score]
+        elif len(word) == 10 and len(winner_max[0]) != 10:
+            winner_max = [word, current_score]
+            
+        elif len(word) == 10 and len(winner_max[0]) == 10:
+            if current_score > winner_max[1]:
+                winner_max = [word, current_score]
+
+
     return winner_max[0],winner_max[1]
 
 
