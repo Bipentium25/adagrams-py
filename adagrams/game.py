@@ -65,37 +65,20 @@ def uses_available_letters(word, letter_bank):
             letter_dict[letter] -= 1
     return True
 
-
-"""
-    # I tried this at first I suppose I could use a so called shallow copy of the original list as a "bank"? but it is probably better
-    # to build a dictionary for speed purpose. 
-    letterbank_copy = letter_bank[:]
-    if len(word) > 10:
-        return False
-    for letter in word:
-        if letter not in letterbank_copy:
-            return False
-        else:
-            letterbank_copy.remove(letter) # it is said that remove() will only remove the first letter encounter.
-
-    return True
-"""
-
-
 def score_word(word):
     word = word.upper()
     word_point = 0
     if len(word) > 6:
         word_point += 8
     letter_score = {
-    ('A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'): 1,
-    ('D', 'G'): 2,
-    ('B', 'C', 'M', 'P'): 3,
-    ('F', 'H', 'V', 'W', 'Y'): 4,
-    ('K',): 5,
-    ('J', 'X'): 8,
-    ('Q', 'Z'): 10    
-    }
+        ('A', 'E', 'I', 'O', 'U', 'L', 'N', 'R', 'S', 'T'): 1,
+        ('D', 'G'): 2,
+        ('B', 'C', 'M', 'P'): 3,
+        ('F', 'H', 'V', 'W', 'Y'): 4,
+        ('K',): 5,
+        ('J', 'X'): 8,
+        ('Q', 'Z'): 10    
+        }
     for letter in word:
         for key , value in letter_score.items(): 
             if letter in key:
