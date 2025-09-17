@@ -41,16 +41,34 @@ def draw_letters():
     pool = establish_pool()
     pool_size = len(pool)
     hand_cards = []
+    # pull the cards 10 times, decreasing pool size by one by pop the card out of the pool. 
     for i in range(10):
         rand_index = random.randint(0,pool_size-1)
         hand_cards.append(pool[rand_index])
         pool.pop(rand_index)
-        pool_size -= 1
+        pool_size -= 1 # or len(pool)
     pool += hand_cards
     return hand_cards
 
 def uses_available_letters(word, letter_bank):
     word = word.upper()
+    letter_dict = {}
+    for letter in letter_bank:
+        # default letter_dict[letter] = 0, using the .get() method 
+        # and add one each time encounter the letter, the first encouter also adds 1 
+        #it's probably also workable to build a hashtable of every letter possible and count every letter into the dictionary 
+        letter_dict[letter] = letter_dict.get(letter, 0) + 1
+    for letter in word: 
+        if letter not in letter_dict or letter_dict[letter] < 1:
+            return False
+        else:
+            letter_dict[letter] -= 1
+    return True
+
+
+"""
+    # I tried this at first I suppose I could use a so called shallow copy of the original list as a "bank"? but it is probably better
+    # to build a dictionary for speed purpose. 
     letterbank_copy = letter_bank[:]
     if len(word) > 10:
         return False
@@ -58,9 +76,11 @@ def uses_available_letters(word, letter_bank):
         if letter not in letterbank_copy:
             return False
         else:
-            letterbank_copy.remove(letter)
+            letterbank_copy.remove(letter) # it is said that remove() will only remove the first letter encounter.
 
     return True
+"""
+
 
 def score_word(word):
     word = word.upper()
@@ -86,14 +106,17 @@ def get_highest_word_score(word_list):
     winner_max = [word_list[0], score_word(word_list[0])]
     for i in range(1, len(word_list)):
         current_score = score_word(word_list[i])
-        ### cases where update needed
+        ### 3 cases where update needed
         if current_score > winner_max[1]:
+            # 1. current score larger than recorded 
             winner_max = [word_list[i], current_score]
-        elif current_score == winner_max[1]:
+        elif current_score == winner_max[1]: 
             if len(word_list[i]) != 10 and len(winner_max[0])!= 10:
-                if len(word_list[i]) < len(winner_max[0]):
+                if len(word_list[i]) < len(winner_max[0]): 
+                    # 2. when equal in word length, and both length != 10. Update needed only when current length < recorded word length.
                     winner_max = [word_list[i], current_score]
             elif len(word_list[i]) == 10 and len(winner_max[0])!= 10:
+                # 3. when len(currentword) == 10. Automatically wins over the others. 
                 winner_max = [word_list[i], current_score]
     
     return winner_max[0],winner_max[1]
